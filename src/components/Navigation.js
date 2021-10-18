@@ -5,17 +5,31 @@ import {
   Toolbar,
   Typography,
   Button,
-  IconButton,
-} from "@mui/material/core";
-import { ThemeConsumer } from "styled-components";
+} from "@material-ui/core";
+import { Link } from "react-router-dom";
 
-const useStyles = makeStyles((them) => ({
+const useStyles = makeStyles((theme) => ({
+  // root: {
+  //   flexGrow: 1,
+  // },
+
   menuButton: {
     marginRight: theme.spacing(2),
   },
 
+  title: {
+    flexGrow: 3,
+    display: "flex",
+    flexBasis: "20vw",
+    justifyContent: "flex start",
+    alignItems: "center",
+    marginLeft: theme.spacing(2),
+    fontFamily: "cursive",
+    fontWeight: "bolder",
+    fontSize: "25px",
+  },
   button: {
-    flexGrowe: 3,
+    flexGrow: 3,
     display: "flex",
     flexBasis: "20vw",
     alignItems: "center",
@@ -25,18 +39,27 @@ const useStyles = makeStyles((them) => ({
     fontWeight: "bold",
     fontSize: "20px",
   },
-
-  title: {
-    flexGrow: 3,
-    display: "flex",
-    flexBasis: "20vw",
-    fontFamily: "cursive",
-    fontWeight: "bolder",
-    fontSize: "25px",
-    justifyContent: "flex start",
-    alignItems: "center",
-    marginLeft: theme.spacing(2),
-  },
 }));
 
-function Navigation({...props})
+function Navigation() {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <AppBar>
+        <Toolbar>
+          <Typography variant="h6" className={classes.title}>
+            Pokedex
+          </Typography>
+          <Link to="/ulubione-pokemony">
+            <Button className={classes.button}>Ulubione</Button>
+          </Link>
+          <Link to="/arena-pokemonow">
+            <Button className={classes.button}>Arena</Button>
+          </Link>
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
+}
+export default Navigation;

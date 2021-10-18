@@ -1,151 +1,123 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Button from "@mui/material/Button";
-import { display } from "@mui/system";
+import styled from "styled-components";
+import { useHistory, useParams } from "react-router-dom";
 
-const Card = styled.div`
-
-display: flex;
-algin-items: center;
-flex-direction: column
-justify-content: space-between;
-margin: 14px 75px
-box sizing; border-box
-padding: 8px;
-background-color: rgba(0, 0, 0, 0.2);
-box-shadow: 0 5px 20px rgba(0,0,0,0.30);
-width: 250px;
-min-height: 3px;
-height: auto;
-text-align: center;
-color: white;
-text-transform: capitalize;`;
-
-const Species = styled.h3`
-  margin: 5px 0;
-  text-transform: uppercase;
+const Wrapper = styled.div`
+  /* display: flex;
+  flex-wrap: wrap;
+  align-items: space-between;
+  margin: 0 auto;
+  width: 80px;
+   */
 `;
-const Line = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  height: 20%;
-  margin: 5px 0;
-`;
-
-const Image = styled.img`
-  width: auto;
-  max-width: 150px;
-  min-height: 150px;
-  position: relative;
-`;
-
-const DetailsBlock = styled.div`
-  width: 100%;
-  height: 100%;
+const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 1 rem 0;
+  margin: 0.3rem;
+  border: 1px solid;
+  border-radius: 1.5rem;
+  min-width: 300px;
+  box-shadow: 0 4px 8px 10px rgba(0, 0, 0, 0.2);
+  background-color: #fefbd8;
+  transition: 0.5s;
+  min-height: 400px;
+`;
+
+const Image = styled.img`
+  margin-top: 40px;
+  max-width: 40%;
+`;
+const Info = styled.div`
+  margin-top: 20px;
+  font-family: serif;
+  max-height: 80%;
+  align-items: center;
   justify-content: flex-start;
 `;
-
-const TextBlock = styled.div`
-  width: 100%;
-  text-align: center;
-  box-sizing: border-box;
-  font-size: 12px;
+const Name = styled.div`
+  font-family: "Times New Roman", Times, serif;
+  font-size: 30px;
+  font-weight: bolder;
+  color: red;
 `;
-
-const TextTitle = styled.div`
+const Abilities = styled.div`
   display: flex;
-  box-sizing: border-box;
-  text-align: center;
-  padding: 0 2px;
-  font-weight: bold;
-  font-size: 13px;
-  text-transform: uppercase;
+  justify-content: space-between;
+  margin-top: 23px;
 `;
+const Forms = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+`;
+const Data = styled.h5`
+  margin-top: 1px;
+`;
+const Title = styled.h4`
+  font-size: 20px;
+`;
+const Card = ({ url }) => {
+  const history = useHistory();
+  const [pokemon, setPokemon] = useState([]);
+  const [addFavorite, setAddFavorite] = useState(true);
+  const hasAbility = Array.isArray(pokemon?.abilities);
+  const { id } = useParams();
+  console.log("id", id);
 
-const PageButton = styled(Button)({
-  cursor: "pointer",
-  textTransform: "uppercase",
-  position: "relative",
-  fontSize: 9,
-  padding: "3px 0",
-  right: "85px",
-  border: "1px solid",
-  borderRadius: "0 0",
-  lineHeight: 1.5,
-  backgroundColor: "rgba(0, 0, 0, 0.1)",
-  borderColor: "rgba(0, 0, 0, 0.1)",
-  fontFamily: [
-    "-apple-system",
-    "BlinkMacSystemFont",
-    '"Segoe UI"',
-    "Roboto",
-    '"Helvetica Neue"',
-    "Arial",
-    "sans-serif",
-    '"Apple Color Emoji"',
-    '"Segoe UI Emoji"',
-    '"Segoe UI Symbol"',
-  ].join(","),
-  "&:hover": {
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
-    borderColor: "rgba(0, 0, 0, 0.1)",
-    boxShadow: "0 5px 15px rgba(0,0,0,0.4);",
-  },
-  "&:active": {
-    boxShadow: "0 5px 20px rgba(0,0,0,0.8);",
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
-    borderColor: "rgba(0, 0, 0, 0.1)",
-  },
-});
+  useEffect(async () => {
+    const response = await axios.get(`${url}`);
+    setPokemon(response.data);
+  }, [url]);
+  console.log("pokemon", pokemon?.abilities);
 
-const ArenaPokemons = (pokemon) => {
-  const handleDeletePokemon = () => {
-    axios
-      .delete(`http://localhost:3000/arena/${pokemon?.id}`)
-      .then((response) => console.log(response.data))
-      .catch((error) => console.log(error));
-
-    window.location.reload();
+  const handleClick = () => {
+    history.push(`/${pokemon.id}`);
   };
 
   return (
-    <Card>
-      <PageButton onClick={handleDeletePokemon} variant="contained">
-        Usuń
-      </PageButton>
-
-      <Image src={pokemon?.sprite} />
-      <Species>{pokemon?.species}</Species>
-      <Line>
-        <DetailsBlock>
-          <TextBlock>{pokemon?.height}</TextBlock>
-          <TextTitle>Height</TextTitle>
-        </DetailsBlock>
-
-        <DetailsBlock>
-          <TextBlock>{pokemon?.baseExperience}</TextBlock>
-          <TextTitle>Base experience</TextTitle>
-        </DetailsBlock>
-      </Line>
-
-      <Line>
-        <DetailsBlock>
-          <TextBlock>{pokemon?.weight}</TextBlock>
-          <TextTitle>Weight</TextTitle>
-        </DetailsBlock>
-
-        <DetailsBlock>
-          <TextBlock>{pokemon?.ability}</TextBlock>
-          <TextTitle>Ability</TextTitle>
-        </DetailsBlock>
-      </Line>
-    </Card>
+    <>
+      {hasAbility && (
+        <CardContainer onClick={handleClick} data-name={pokemon.name}>
+          <Image
+            alt={pokemon.name}
+            src={pokemon?.sprites?.other.dream_world.front_default}
+          />
+          <Info>
+            <div>
+              <Name>{pokemon.name}</Name>
+            </div>
+            <Abilities>
+              <Forms>
+                <Title>Height</Title>
+                <Data>{pokemon.height}</Data>
+              </Forms>
+              <Forms>
+                <Title>Base experience</Title>
+                <Data>{pokemon.base_experience}</Data>
+              </Forms>
+            </Abilities>
+            <Abilities>
+              <Forms>
+                <Title>Weight</Title>
+                <Data>{pokemon.weight}</Data>
+              </Forms>
+              <Forms>
+                <Title>Ability</Title>
+                {pokemon?.abilities.map(({ ability: { name } }) => (
+                  <Data>{name}</Data>
+                ))}
+              </Forms>
+            </Abilities>
+          </Info>
+        </CardContainer>
+      )}
+    </>
   );
 };
 
