@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useHistory, useParams } from "react-router-dom";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
-import { CallMissedSharp, Style } from "@mui/icons-material";
 import { boxSizing } from "@mui/system";
 
 const Container = styled.div`
@@ -81,7 +80,7 @@ const Data = styled.h5`
   margin-top: 1px;
 `;
 
-const PokemonDetails = () => {
+const PokemonCards = () => {
   const history = useHistory();
   const [pokemon, setPokemon] = useState([]);
   const [pokemonFavourite, setPokemonFavourite] = useState(null);

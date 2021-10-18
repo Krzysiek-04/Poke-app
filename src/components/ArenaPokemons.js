@@ -62,7 +62,7 @@ const Data = styled.h5`
 const Title = styled.h4`
   font-size: 20px;
 `;
-const Card = ({ url }) => {
+const ArenaPokemons = ({ url }) => {
   const history = useHistory();
   const [pokemon, setPokemon] = useState([]);
   const [addFavorite, setAddFavorite] = useState(true);
