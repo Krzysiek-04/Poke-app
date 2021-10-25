@@ -4,68 +4,66 @@ import styled from "styled-components";
 import { useHistory, useParams } from "react-router-dom";
 
 const Wrapper = styled.div`
-  /* display: flex;
-  flex-wrap: wrap;
-  align-items: space-between;
-  margin: 0 auto;
-  width: 80px;
-   */
+  display: flex;
+  background-color: #cccccc;
+  height: 400px;
 `;
 const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 400px;
   justify-content: center;
-  padding: 1 rem 0;
-  margin: 0.3rem;
-  border: 1px solid;
-  border-radius: 1.5rem;
-  min-width: 300px;
-  box-shadow: 0 4px 8px 10px rgba(0, 0, 0, 0.2);
-  background-color: #fefbd8;
-  transition: 0.5s;
-  min-height: 400px;
+  background-color: #cccccc;
+  transition: 2s;
 `;
-
 const Image = styled.img`
-  margin-top: 40px;
-  max-width: 40%;
+  max-width: 30%;
+ }
 `;
 const Info = styled.div`
   margin-top: 20px;
   font-family: serif;
-  max-height: 80%;
+  max-height: 40%;
   align-items: center;
-  justify-content: flex-start;
 `;
 const Name = styled.div`
+  display: flex;
+  justify-content: center;
   font-family: "Times New Roman", Times, serif;
   font-size: 30px;
   font-weight: bolder;
   color: red;
+  text-transform: capitalize;
 `;
 const Abilities = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 23px;
+  font-size: 10px;
 `;
 const Forms = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 30px;
-  margin-bottom: 20px;
+  margin-top: 10px;
   margin-left: 20px;
 `;
-const Data = styled.h5`
-  margin-top: 1px;
-`;
+
 const Title = styled.h4`
-  font-size: 20px;
+  font-size: 13px;
+  margin-top: 0vw;
+  color: black;
 `;
-const ArenaPokemons = ({ url }) => {
+
+const Data = styled.h5`
+  display: flex;
+  justify-content: center;
+  margin-top: 0vw;
+  font-size: 8px;
+`;
+
+const PokemonCard = ({ url }) => {
   const history = useHistory();
   const [pokemon, setPokemon] = useState([]);
-  const [addFavorite, setAddFavorite] = useState(true);
   const hasAbility = Array.isArray(pokemon?.abilities);
   const { id } = useParams();
   console.log("id", id);
@@ -81,7 +79,7 @@ const ArenaPokemons = ({ url }) => {
   };
 
   return (
-    <>
+    <Wrapper>
       {hasAbility && (
         <CardContainer onClick={handleClick} data-name={pokemon.name}>
           <Image
@@ -117,8 +115,7 @@ const ArenaPokemons = ({ url }) => {
           </Info>
         </CardContainer>
       )}
-    </>
+    </Wrapper>
   );
 };
-
-export default ArenaPokemons;
+export default PokemonCard;

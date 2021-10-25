@@ -1,42 +1,30 @@
 import React from "react";
-import {
-  makeStyles,
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-} from "@material-ui/core";
+import { makeStyles, AppBar, Toolbar, Button, styled } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
+// import Pokemon from "../Image/Pokemon";
 
 const useStyles = makeStyles((theme) => ({
-  // root: {
-  //   flexGrow: 1,
-  // },
-
   menuButton: {
     marginRight: theme.spacing(2),
   },
 
   title: {
-    flexGrow: 3,
+    flexGrow: 5,
+    flexDirection: "row",
     display: "flex",
-    flexBasis: "20vw",
+    flexBasis: "vw",
+    float: "left",
     justifyContent: "flex start",
-    alignItems: "center",
-    marginLeft: theme.spacing(2),
-    fontFamily: "cursive",
-    fontWeight: "bolder",
-    fontSize: "25px",
+    alignItems: "start",
   },
   button: {
-    flexGrow: 3,
+    flexGrow: 5,
     display: "flex",
+    float: "right",
     flexBasis: "20vw",
     alignItems: "center",
-    marginRight: theme.spacing(4),
-    fontFamily: "cursive",
     color: "white",
-    fontWeight: "bold",
     fontSize: "20px",
   },
 }));
@@ -48,14 +36,13 @@ function Navigation() {
     <div className={classes.root}>
       <AppBar>
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Pokedex
-          </Typography>
-          <Link to="/ulubione-pokemony">
-            <Button className={classes.button}>Ulubione</Button>
+          <CatchingPokemonIcon className={classes.title} />
+
+          <Link to="/Favourite">
+            <Button variant="contained">Favorite</Button>
           </Link>
-          <Link to="/arena-pokemonow">
-            <Button className={classes.button}>Arena</Button>
+          <Link to="/Arena">
+            <Button variant="contained">Arena</Button>
           </Link>
         </Toolbar>
       </AppBar>

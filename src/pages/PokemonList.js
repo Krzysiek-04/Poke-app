@@ -1,39 +1,38 @@
-import { CardActionArea } from "@material-ui/core";
-import { height } from "@mui/system";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import Paper from "@mui/material/Paper";
+import InputBase from "@mui/material/InputBase";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
 
-import ArenaPokemons from "../components/ArenaPokemons";
-import Search from "../components/Search";
+import PokemonCard from "../components/PokemonCard";
 
 const Container = styled.div`
-  background-color: #80ced6;
-
-  /* padding-top: 0%; */
+  width: 100vw;
+  background-color: #6fa8dc;
+`;
+const ContainerSearch = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 5vw;
+  padding-bottom: 2vw;
+  margin-bottom: 3px;
+  background-color: #6fa8dc;
 `;
 const PageButton = styled.button`
-  line-height: 40px;
-  margin: 100px 100px 20px 80px;
+  margin: 40px 40px 0px 40px;
   display: inline-block;
-  height: 50px;
-  width: 130px;
-  border: none;
-  background-color: #667292;
-  box-shadow: 0 4px 8px 10px rgba(0, 0, 0, 0.2);
+  bodrer: 1px solid;
+  height: 30px;
+  width: 100px;
+  background-color: #4040a1;
   text-align: center;
   cursor: pointer;
   padding: 0;
-  color: whitesmoke;
   text-decoration: none;
-  transition: 0.5s;
-  &:hover {
-    box-shadow: 0 3px 6px 8px rgba(0, 0, 0, 0.2);
-    text-decoration: none;
-    background-color: #87bdd8;
-    color: #282c34;
-    border-radius: 1px;
-  }
+  // transition: 0.5s;
 `;
 const ContainerButton = styled.div`
   display: flex;
@@ -43,42 +42,33 @@ const ContainerButton = styled.div`
   height: 100%;
   justify-content: center;
 `;
-
 const MainContainer = styled.div`
   display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: space-around;
+  width: 100vw;
+  justify-content: space-between;
   flex-wrap: wrap;
-  margin-left: 5px;
 `;
 const Content = styled.div`
   display: flex;
   flex-wrap: wrap;
-  align-items: space-between;
   justify-content: space-around;
-  margin-top: 40px;
-  margin-bottom: 40px;
-  margin-left: 20px;
-  margin-right: 20px;
-  /* max-width: 450px;  */
-  max-width: 15vw;
+  align-items: space-between;
+  margin: 20px 30px 30px 20px;
   cursor: pointer;
   &:hover {
-    box-shadow: 0 3px 6px 8px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 3px 3px 5px rgba(0, 0, 0, 0.6);
     text-decoration: none;
-    background-color: #87bdd8;
-    color: #282c34;
-    border-radius: 0.5px;
+    border-radius: 5px;
   }
 `;
-const NEXT = "NASTĘPNA";
-const PREV = "POPRZEDNIA";
+const NEXT = "Next";
+const PREV = "Previus";
 
 function PokemonList() {
   const [pokemon, setPokemon] = useState();
   const [limitValue, setLimitValue] = useState(15);
   const [pageValue, setPageValue] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
   const BASE_URL = `https://pokeapi.co/api/v2/pokemon`;
 
   useEffect(() => {
@@ -86,43 +76,70 @@ function PokemonList() {
       .get(`${BASE_URL}?limit=${limitValue}&offset=${pageValue}`)
       .then((response) => {
         setPokemon(response.data);
-        // setPokem(response.data.results)
         console.log("dane", response.data);
       });
   }, [pageValue, limitValue]);
   console.log();
 
-  if (!pokemon) {
-    alert("Cierpliwości, za chwilę wyskoczą Pokemony...");
-  }
   const prevPage = () => {
     if (pageValue === 0) {
-      alert("Jesteś na pierwszej stronie :-)");
       return;
     }
-    setPageValue(pageValue - 16);
+    setPageValue(pageValue - 15);
     setLimitValue(15);
   };
   const nextPage = () => {
-    if (pageValue === 11) {
-      alert("Jesteś na ostatniej stronie");
+    if (pageValue === 150) {
       return;
+    } else if (pageValue === 135) {
+      setLimitValue(1);
     }
-    setPageValue(pageValue + limitValue);
-    setLimitValue(15);
+    setPageValue(pageValue + 15);
   };
   return (
     <Container>
+      <ContainerSearch>
+        <Paper
+          component="form"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            width: 250,
+          }}
+        >
+          <IconButton>
+            <MenuIcon />
+          </IconButton>
+          <InputBase
+            placeholder="Search"
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+            }}
+          />
+          <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
+            <SearchIcon />
+          </IconButton>
+        </Paper>
+      </ContainerSearch>
+
       <ContainerButton>
         <PageButton onClick={prevPage}>{PREV}</PageButton>
         <PageButton onClick={nextPage}>{NEXT}</PageButton>
       </ContainerButton>
       <MainContainer>
         {pokemon?.results
-          ?.filter((_, index) => index < 15)
+          ?.filter((pokemon) => {
+            if (searchValue === "") {
+              return pokemon;
+            } else if (
+              pokemon.name.toLowerCase().includes(searchValue.toLowerCase())
+            ) {
+              return pokemon;
+            }
+          })
           .map(({ url }, index) => (
             <Content>
-              <ArenaPokemons url={url} key={index} />
+              <PokemonCard url={url} key={index} />
             </Content>
           ))}
       </MainContainer>

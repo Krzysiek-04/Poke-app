@@ -1,40 +1,30 @@
-import React, { useState } from "react";
-import Switch from "react-switch";
 import "./App.css";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Navigation from "./components/Navigation";
-import Search from "./components/Search";
-import Arena from "./pages/Arena";
-import ArenaPokemons from "./components/ArenaPokemons";
 import PokemonList from "./pages/PokemonList";
-import PokemonCrads from "./components/PokemonCards";
-import Favorite from "./pages/Favorite";
+import Arena from "./pages/Arena";
+import Favourite from "./pages/Favourite";
+import Details from "./components/Details";
 
 function App() {
   const [pokem, setPokem] = useState(null);
-  const [search, setSearch] = useState("");
-  const [value, setValue] = useState(2);
+  const BASE_URL = `https://pokeapi.co/api/v2/pokemon`;
+  console.log("pok", pokem);
 
-  console.log("poki", pokem);
-
-  // const handleClick = (pokemonName) => {
-  //   history.push(`/${pokemonName}`)
-  // }
   return (
     <div className="App">
       <Router>
         <Navigation />
-
         <Switch>
           <Route path="/" exact>
             <div>
-              <Search handleClick={(value) => setSearch(value)} />
               <PokemonList setPokem={setPokem} />
             </div>
           </Route>
-          <Route path="/Ulubione">
-            <Favorite />
+          <Route path="/Favourite">
+            <Favourite />
           </Route>
 
           <Route path="/Arena">
@@ -42,7 +32,7 @@ function App() {
           </Route>
 
           <Route path="/:id">
-            <PokemonCrads />
+            <Details />
           </Route>
         </Switch>
       </Router>
